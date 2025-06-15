@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./vet-gestor-api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./vet-gestor-api:/app
+    networks:
+      - vet-gestor-network
+
+  frontend:
+    build:
+      context: ./vet-gestor-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - vet-gestor-network
+
+networks:
+  vet-gestor-network:
+    driver: bridge
